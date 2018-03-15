@@ -3,6 +3,22 @@ In this project, a state machine will be set up using event-driven programming t
 
 The written code is similar to how a drone would be controlled from a ground station computer or an onboard flight computer.
 
+[//]: # (Image References)
+
+[image1]: ./examples/1.png ""
+[image2]: ./examples/2.png ""
+
+## Mission
+The required task is to command the drone to fly a 15 meter box at a 3 meter altitude. You'll fly this path in two ways: first using manual control and then under autonomous control.
+
+Manual control of the drone is done using the instructions found with the simulator.
+
+Autonomous control will be done using an event-driven state machine. First, you will need to fill in the appropriate callbacks. Each callback will check against transition criteria dependent on the current state. If the transition criteria are met, it will transition to the next state and pass along any required commands to the drone.
+
+![alt text][image1]
+
+![alt text][image2]
+
 ## Step 1: Download the Simulator
 If you haven't already, download the version of the simulator that's appropriate for your operating system [from this repository](https://github.com/udacity/FCND-Simulator-Releases/releases).
 
@@ -14,12 +30,14 @@ Set up your Python environment and get all the relevant packages installed using
 git clone https://github.com/MeRKeZ/FlyingCar_BackyardFlyer
 ```
 
-## Mission
-The required task is to command the drone to fly a 15 meter box at a 3 meter altitude. You'll fly this path in two ways: first using manual control and then under autonomous control.
+## Step 4: Running the State Machine
 
-Manual control of the drone is done using the instructions found with the simulator.
+After the commands below are prompted in Anaconda Environment, the code in first cell of Jupyter Notebook is executed
 
-Autonomous control will be done using an event-driven state machine. First, you will need to fill in the appropriate callbacks. Each callback will check against transition criteria dependent on the current state. If the transition criteria are met, it will transition to the next state and pass along any required commands to the drone.
+```sh
+activate fcnd
+jupyter notebook
+```
 
 ## Drone API
 
@@ -127,7 +145,7 @@ latitude = t_log['MsgID.GLOBAL_POSITION'][2][:]
 The data between different messages will not be time synced since they are recorded at different times.
 
 
-## Autonomous Control State Machine
+### Autonomous Control State Machine
 
 The six states predefined for the state machine:
 
@@ -150,15 +168,6 @@ def state_callback(self):
 ```
 
 This is a callback on the state message. It only checks anything if it's in the DISARMING state. If it detects that the drone is successfully disarmed, it sets the mode back to manual and terminates the mission.       
-
-### Running the State Machine
-
-After the commands below are prompt in Anaconda Environment, the code in first cell of Jupyter Notebook is executed
-
-```sh
-activate fcnd
-jupyter notebook
-```
 
 ### Reference Frames
 
