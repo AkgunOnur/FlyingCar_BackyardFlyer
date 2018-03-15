@@ -1,21 +1,21 @@
 # FCND - Backyard Flyer Project
-In this project, you'll set up a state machine using event-driven programming to autonomously flying a drone. You will be using flying a quadcopter in Unity simulator. After completing this assignment, you'll be familiar with sending commands and receiving incoming data from the drone. 
+In this project, a state machine will be set up using event-driven programming to have an autonomously flying drone. An Unity simulator will be used. 
 
-The python code you write is similar to how the drone would be controlled from a ground station computer or an onboard flight computer. Since communication with the drone is done using MAVLink, you will be able to use your code to control an PX4 quadcopter autopilot with very little modification!
+The written code is similar to how a drone would be controlled from a ground station computer or an onboard flight computer.
 
 ## Step 1: Download the Simulator
 If you haven't already, download the version of the simulator that's appropriate for your operating system [from this repository](https://github.com/udacity/FCND-Simulator-Releases/releases).
 
 ## Step 2: Set up your Python Environment
-If you haven't already, set up your Python environment and get all the relevant packages installed using Anaconda following instructions in [this repository](https://github.com/udacity/FCND-Term1-Starter-Kit)
+Set up your Python environment and get all the relevant packages installed using Anaconda following instructions in [this repository](https://github.com/udacity/FCND-Term1-Starter-Kit)
 
 ## Step 3: Clone this Repository
 ```sh
-git clone https://github.com/udacity/FCND-Backyard-Flyer
+git clone https://github.com/MeRKeZ/FlyingCar_BackyardFlyer
 ```
 
-## Task
-The required task is to command the drone to fly a 10 meter box at a 3 meter altitude. You'll fly this path in two ways: first using manual control and then under autonomous control.
+## Mission
+The required task is to command the drone to fly a 15 meter box at a 3 meter altitude. You'll fly this path in two ways: first using manual control and then under autonomous control.
 
 Manual control of the drone is done using the instructions found with the simulator.
 
@@ -23,7 +23,7 @@ Autonomous control will be done using an event-driven state machine. First, you 
 
 ## Drone API
 
-To communicate with the simulator (and a real drone), you will be using the [UdaciDrone API](https://udacity.github.io/udacidrone/).  This API handles all the communication between Python and the drone simulator.  A key element of the API is the `Drone` superclass that contains the commands to be passed to the simulator and allows you to register callbacks/listeners on changes to the drone's attributes.  The goal of this project is to design a subclass from the Drone class implementing a state machine to autonomously fly a box. A subclass is started for you in `backyard_flyer.py`
+To communicate with the simulator (and a real drone), you will be using the [UdaciDrone API](https://udacity.github.io/udacidrone/).  This API handles all the communication between Python and the drone simulator.  A key element of the API is the `Drone` superclass that contains the commands to be passed to the simulator and allows you to register callbacks/listeners on changes to the drone's attributes.  The goal of this project is to design a subclass from the Drone class implementing a state machine to autonomously fly a box.
 
 ### Drone Attributes
 
@@ -43,7 +43,7 @@ As the simulator passes new information about the drone to the Python `Drone` cl
 
 1. Create the callback function:
 
-Each callback function you may want needs to be defined as a member function of the `BackyardFlyer` class provided to you in `backyard_flyer.py` that takes in only the `self` parameter.  You will see in the template provided to you in `backyard_flyer.py` three such callback methods you may find useful have already been defined.  For example, here is the definition of one of the callback methods:
+Each callback function needs to be defined as a member function of the `BackyardFlyer` class provided in `backyard_flyer.ipynb` that takes only the `self` parameter.  There is a template below.
 
 ```python
 class BackyardFlyer(Drone):
@@ -56,7 +56,7 @@ class BackyardFlyer(Drone):
 
 2. Register the callback:
 
-In order to have your callback function called when the appropriate attributes are updated, each callback needs to be registered.  This registration takes place in you `BackyardFlyer`'s `__init__()` function as shown below:
+In order to have a callback function called when the appropriate attributes are updated, each callback needs to be registered.  This registration takes place in you `BackyardFlyer`'s `__init__()` function as shown below:
 
 ```python
 class BackyardFlyer(Drone):
@@ -77,7 +77,7 @@ Since callback functions are only called when certain drone attributes are chang
 
 ### Outgoing Commands
 
-The UdaciDrone API's `Drone` class also contains function to be able to send commands to the drone.  Here is a list of commands that you may find useful during the project:
+The UdaciDrone API's `Drone` class also contains function to be able to send commands to the drone.  Here is a list of useful commands:
 
  - `connect()`: Starts receiving messages from the drone. Blocks the code until the first message is received
  - `start()`: Start receiving messages from the drone. If the connection is not threaded, this will block the code.
@@ -96,39 +96,9 @@ These can be called directly from other methods within the drone class:
 self.arm() # Seends an arm command to the drone
 ```
 
-### Manual Flight
-
-To log data while flying manually, run the `drone.py` script as shown below:
-
-```sh
-python drone.py
-```
-
-Run this script after starting the simulator. It connects to the simulator using the Drone class and runs until tcp connection is broken. The connection will timeout if it doesn't receive a heartbeat message once every 10 seconds. The GPS data is automatically logged.
-
-To stop logging data, stop the simulator first and the script will automatically terminate after approximately 10 seconds.
-
-Alternatively, the drone can be manually started/stopped from a python/ipython shell:
-
-```python
-from udacidrone import Drone
-from udacidrone.connection import MavlinkConnection
-conn = MavlinkConnection('tcp:127.0.0.1:5760', threaded=False)
-drone = Drone(conn,tlog_name="TLog-manual.txt")
-drone.start()
-```
-
-If `threaded` is set to `False`, the code will block and the drone logging can only be stopped by terminating the simulation. If the connection is threaded, the drone can be commanded using the commands described above, and the connection can be stopped (and the log properly closed) using:
-
-```python
-drone.stop()
-```
-
-When starting the drone manually from a python/ipython shell you have the option to provide a desired filename for the telemetry log file (such as "TLog-manual.txt" as shown above).  This allows you to customize the telemetry log name as desired to help keep track of different types of log files you might have.  Note that when running the drone from `python drone.py` for manual flight, the telemetry log will default to "TLog-manual.txt".
-
 ### Message Logging
 
-The telemetry data is automatically logged in "Logs\TLog.txt" or "Logs\TLog-manual.txt" for logs created when running `python drone.py`. Each row contains a comma seperated representation of each message. The first row is the incoming message type. The second row is the time. The rest of the rows contains all the message properties. The types of messages relevant to this project are:
+The telemetry data is automatically logged in "Logs\TLog.txt" or "Logs\TLog-manual.txt" for logs created when running `backyard_flyer.ipynb`. Each row contains a comma seperated representation of each message. The first row is the incoming message type. The second row is the time. The rest of the rows contains all the message properties. The types of messages relevant to this project are:
 
 * `MsgID.STATE`: time (ms), armed (bool), guided (bool)
 * `MsgID.GLOBAL_POSITION`: time (ms), longitude (deg), latitude (deg), altitude (meter)
@@ -159,9 +129,8 @@ The data between different messages will not be time synced since they are recor
 
 ## Autonomous Control State Machine
 
-After getting familiar with how the drone flies, you will fill in the missing pieces of a state machine to fly the drone autonomously. The state machine is run continuously until either the mission is ended or the Mavlink connection is lost.
-
 The six states predefined for the state machine:
+
 * MANUAL: the drone is being controlled by the user
 * ARMING: the drone is in guided mode and being armed
 * TAKEOFF: the drone is taking off from the ground
@@ -169,7 +138,7 @@ The six states predefined for the state machine:
 * LANDING: the drone is landing on the ground
 * DISARMING: the drone is disarming
 
-While the drone is in each state, you will need to check transition criteria with a registered callback. If the transition criteria are met, you will set the next state and pass along any commands to the drone. For example:
+While the drone is in each state, transition criteria needs to be checked with a registered callback. If the transition criteria are met, next state will be set and any commands will be passed along to the drone. For example:
 
 ```python
 def state_callback(self):
@@ -184,14 +153,12 @@ This is a callback on the state message. It only checks anything if it's in the 
 
 ### Running the State Machine
 
-After filling in the appropriate callbacks, you will run the mission:
+After the commands below are prompt in Anaconda Environment, the code in first cell of Jupyter Notebook is executed
 
 ```sh
-python backyard_flyer.py
+activate fcnd
+jupyter notebook
 ```
-
-Similar to the manual flight, the GPS data is automatically logged to the specified log file.
-
 
 ### Reference Frames
 
@@ -204,12 +171,3 @@ def local_to_global(local_position, global_home):
 # Convert a global position (lon, lat, up) to a local position (north, east, down) relative to the home position
 def global_to_local(global_position, global_home):
 ```
-
-
-
-## Submission Requirements
-
-* Filled in backyard_flyer.py
-
-
-
